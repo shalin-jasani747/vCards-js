@@ -8,7 +8,6 @@
  * Represents a contact that can be imported into Outlook, iOS, Mac OS, Android devices, and more
  */
 var vCard = (function () {
-  var requireAvoidingErrors = require;
   var fs   = require('fs');
   var path = require('path');
 
@@ -303,7 +302,7 @@ var vCard = (function () {
          * @return {String} Formatted vCard in VCF format
          */
         getFormattedString: function() {
-            var vCardFormatter = requireAvoidingErrors('./lib/vCardFormatter');
+            var vCardFormatter = require('./lib/vCardFormatter');
             return vCardFormatter.getFormattedString(this);
         },
 
@@ -312,10 +311,10 @@ var vCard = (function () {
          * @param  {String} filename
          */
         saveToFile: function(filename) {
-            var vCardFormatter = requireAvoidingErrors('./lib/vCardFormatter');
+            var vCardFormatter = require('./lib/vCardFormatter');
             var contents = vCardFormatter.getFormattedString(this);
 
-            var fs = requireAvoidingErrors('fs');
+            var fs = require('fs');
             fs.writeFileSync(filename, contents, { encoding: 'utf8' });
         }
     };
