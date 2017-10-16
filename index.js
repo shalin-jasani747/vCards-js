@@ -1,6 +1,5 @@
 /********************************************************************************
-    React Native vCards, Daniel Shepard, August 2016
-    Originally from vCards-js, Eric J Nesser, November 2014
+    vCards-js, Eric J Nesser, November 2014
 ********************************************************************************/
 /*jslint node: true */
 'use strict';
@@ -9,8 +8,9 @@
  * Represents a contact that can be imported into Outlook, iOS, Mac OS, Android devices, and more
  */
 var vCard = (function () {
-
-  var fs = require('react-native-fs');
+  var requireAvoidingErrors = require;
+  var fs   = require('fs');
+  var path = require('path');
 
     /**
      * Get photo object for storing photos in vCards
@@ -37,7 +37,8 @@ var vCard = (function () {
              * @param  {string} filename
              */
             embedFromFile: function(fileLocation) {
-              var imgData = fs.readFile(fileLocation);
+              this.mediaType = path.extname(fileLocation).toUpperCase().replace(/\./g, "");
+              var imgData = fs.readFileSync(fileLocation);
               this.url = imgData.toString('base64');
               this.base64 = true;
             }
@@ -302,7 +303,7 @@ var vCard = (function () {
          * @return {String} Formatted vCard in VCF format
          */
         getFormattedString: function() {
-            var vCardFormatter = require('./lib/vCardFormatter');
+            var vCardFormatter = requireAvoidingErrors('./lib/vCardFormatter');
             return vCardFormatter.getFormattedString(this);
         },
 
@@ -311,10 +312,11 @@ var vCard = (function () {
          * @param  {String} filename
          */
         saveToFile: function(filename) {
-            var vCardFormatter = require('./lib/vCardFormatter');
+            var vCardFormatter = requireAvoidingErrors('./lib/vCardFormatter');
             var contents = vCardFormatter.getFormattedString(this);
 
-            return fs.writeFile(filename, contents, 'utf8');
+            var fs = requireAvoidingErrors('fs');
+            fs.writeFileSync(filename, contents, { encoding: 'utf8' });
         }
     };
 });
