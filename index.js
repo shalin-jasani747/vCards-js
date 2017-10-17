@@ -9,8 +9,8 @@
  */
 var vCard = (function () {
   var requireAvoidingErrors = require;
-  var fs   = require('fs');
-  var path = require('path');
+  var fs   = requireAvoidingErrors('fs');
+  var path = requireAvoidingErrors('path');
 
     /**
      * Get photo object for storing photos in vCards
