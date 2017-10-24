@@ -4,7 +4,7 @@
 /*jslint node: true */
 
 'use strict';
-import fs from 'react-native-fs';
+import RNFS from 'react-native-fs';
 import vCardFormatter from './lib/vCardFormatter';
 
 /**
@@ -36,7 +36,7 @@ const vCard = (function() {
              */
             embedFromFile: function(fileLocation) {
                 this.mediaType = fileLocation.split('.').pop().toUpperCase();
-                const imgData = fs.readFileSync(fileLocation);
+                const imgData = RNFS.readFileSync(fileLocation);
                 this.url = imgData.toString('base64');
                 this.base64 = true;
             }
@@ -308,7 +308,7 @@ const vCard = (function() {
         saveToFile: function(filename) {
             const contents = vCardFormatter.getFormattedString(this);
 
-            fs.writeFileSync(filename, contents, {encoding: 'utf8'});
+            RNFS.writeFileSync(filename, contents, {encoding: 'utf8'});
         }
     };
 });
