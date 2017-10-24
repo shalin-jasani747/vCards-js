@@ -2,24 +2,22 @@
     vCards-js, Eric J Nesser, November 2014
 ********************************************************************************/
 /*jslint node: true */
+
 'use strict';
+import fs from 'react-native-fs';
+import vCardFormatter from './lib/vCardFormatter';
 
 /**
  * Represents a contact that can be imported into Outlook, iOS, Mac OS, Android devices, and more
  */
-var vCard = (function () {
-  var requireAvoidingErrors = require;
-  var fs   = requireAvoidingErrors('fs');
-  var path = requireAvoidingErrors('path');
+const vCard = (function() {
 
     /**
      * Get photo object for storing photos in vCards
      */
     function getPhoto() {
         return {
-            url: '',
-            mediaType: '',
-            base64: false,
+            url: '', mediaType: '', base64: false,
 
             /**
              * Attach a photo from a URL
@@ -37,10 +35,10 @@ var vCard = (function () {
              * @param  {string} filename
              */
             embedFromFile: function(fileLocation) {
-              this.mediaType = path.extname(fileLocation).toUpperCase().replace(/\./g, "");
-              var imgData = fs.readFileSync(fileLocation);
-              this.url = imgData.toString('base64');
-              this.base64 = true;
+                this.mediaType = fileLocation.split('.').pop().toUpperCase();
+                const imgData = fs.readFileSync(fileLocation);
+                this.url = imgData.toString('base64');
+                this.base64 = true;
             }
         };
     }
@@ -93,12 +91,7 @@ var vCard = (function () {
      * @return {object} Social media URL hash group
      */
     function getSocialUrls() {
-        return {
-            'facebook': '',
-            'linkedIn': '',
-            'twitter': '',
-            'flickr': ''
-        };
+        return {'facebook': '', 'linkedIn': '', 'twitter': '', 'flickr': ''};
     }
 
     /********************************************************************************
@@ -291,7 +284,9 @@ var vCard = (function () {
          * @return {integer}
          */
         getMajorVersion: function() {
-            var majorVersionString = this.version ? this.version.split('.')[0] : '4';
+            const majorVersionString = this.version
+                ? this.version.split('.')[0]
+                : '4';
             if (!isNaN(majorVersionString)) {
                 return parseInt(majorVersionString);
             }
@@ -303,7 +298,6 @@ var vCard = (function () {
          * @return {String} Formatted vCard in VCF format
          */
         getFormattedString: function() {
-            var vCardFormatter = requireAvoidingErrors('./lib/vCardFormatter');
             return vCardFormatter.getFormattedString(this);
         },
 
@@ -312,11 +306,9 @@ var vCard = (function () {
          * @param  {String} filename
          */
         saveToFile: function(filename) {
-            var vCardFormatter = requireAvoidingErrors('./lib/vCardFormatter');
-            var contents = vCardFormatter.getFormattedString(this);
+            const contents = vCardFormatter.getFormattedString(this);
 
-            var fs = requireAvoidingErrors('fs');
-            fs.writeFileSync(filename, contents, { encoding: 'utf8' });
+            fs.writeFileSync(filename, contents, {encoding: 'utf8'});
         }
     };
 });
