@@ -305,10 +305,10 @@ const vCard = (function() {
          * Save formatted vCard to file
          * @param  {String} filename
          */
-        saveToFile: function(filename) {
+        saveToFile: async function(filename) {
             const contents = vCardFormatter.getFormattedString(this);
 
-            RNFS.writeFileSync(filename, contents, {encoding: 'utf8'});
+            await RNFS.writeFile(filename, contents, {encoding: 'utf8'});
         }
     };
 });
